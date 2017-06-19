@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-navbar   color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Dashboard
+    </ion-title>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="tipoTarea">
+      <ion-segment-button value="Entrega">
+        Entrega
+      </ion-segment-button>
+      <ion-segment-button value="Entrada">
+        Entrada
+      </ion-segment-button>
+      <ion-segment-button value="Devolucion">
+        Devolucion
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+   <ion-refresher-content  pullingText="Actualizando Tareas...">
+   </ion-refresher-content>
+ </ion-refresher>
+
+    <div *ngIf="tipoTarea=='Entrega'" >
+      <div [hidden]="!loading" text-center padding>
+       <ion-spinner></ion-spinner>
+      </div>
+      <ion-searchbar [(ngModel)]="busqueda"></ion-searchbar>
+      <ion-list [hidden]="loading">
+        <ion-item-sliding *ngFor="let item of listarEntregas | Tareasearch:busqueda;">
+          <button ion-item (click)="confirmDialog(item)">
+            <ion-icon name="ios-clipboard-outline" item-left></ion-icon>
+            <h4>{{item.tipo}} - <small># {{item.documento.DocNum}}</small></h4>
+            <small><b>Trans.</b> {{item.transporte.nombre}} - <b>Plac.</b> {{item.transporte.placas}}</small>
+            <!--<small>{{item.fechaAsignacion | date:'medium' }}</small>-->
+            <p><strong>{{item.documento.CardName}}</strong></p>
+            <ion-badge item-right *ngIf="item.prioridad==='Urgente'" color="danger">{{item.prioridad}}</ion-badge>
+            <ion-badge item-right *ngIf="item.prioridad==='Alta'" color="secondary">{{item.prioridad}}</ion-badge>
+            <ion-badge item-right *ngIf="item.prioridad==='Media'">{{item.prioridad}}</ion-badge>
+            <ion-badge item-right *ngIf="item.prioridad==='Baja'" color="dark">{{item.prioridad}}</ion-badge>
+          </button>
+          <ion-item-options side="right">
+            <button ion-button color="secondary">
+              <ion-icon name="md-text"></ion-icon>
+              Comentar
+            </button>
+            <button ion-button color="light" (click)="modalDetalleTarea(item);">
+              <ion-icon name="ios-list-box-outline"></ion-icon>
+              Detalles
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+    <div  *ngIf="tipoTarea=='Entrada'">
+        <div [hidden]="!loading" text-center padding>
+         <ion-spinner></ion-spinner>
+        </div>
+        <ion-list [hidden]="loading">
+        <ion-searchbar [(ngModel)]="busqueda"></ion-searchbar>
+        <ion-item-sliding *ngFor="let item of this.listaEntrada;">
+          <button ion-item>
+            <ion-icon name="ios-clipboard-outline" item-left></ion-icon>
+            <h4>{{item.tipo}} - <small>  <ion-icon name="calendar"></ion-icon> {{item.fechaAsignacion}}</small></h4>
+            <ion-badge item-right *ngIf="item.prioridad==='Urgente'" color="danger">{{item.prioridad}}</ion-badge>
+            <ion-badge item-right *ngIf="item.prioridad==='Alta'" color="secondary">{{item.prioridad}}</ion-badge>
+            <ion-badge item-right *ngIf="item.prioridad==='Media'">{{item.prioridad}}</ion-badge>
+            <ion-badge item-right *ngIf="item.prioridad==='Baja'" color="dark">{{item.prioridad}}</ion-badge>
+          </button>
+          <ion-item-options side="right">
+            <button ion-button color="secondary">
+              <ion-icon name="md-text"></ion-icon>
+              Comentar
+            </button>
+            <button ion-button color="light" (click)="modalDetalleTarea(item)">
+              <ion-icon name="ios-list-box-outline"></ion-icon>
+              Detalles
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+    <div  *ngIf="tipoTarea=='Devolucion'">
+      Devolucion
+    </div>
+
+</ion-content>

@@ -1,0 +1,14 @@
+{
+  "name": "WMSApp",
+  "app_id": "",
+  "v2": true,
+  "typescript": true,
+  "proxies": [
+  {
+      "path": "/api/*",
+      "proxyUrl": "https://localhost:5000",
+      "secure":false,
+      "logLevel":"debug"
+  }
+]
+}

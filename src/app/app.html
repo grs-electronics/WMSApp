@@ -1,0 +1,25 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar   color="primary">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-avatar item-center >
+          <img src="assets/img/user.png">
+          <hr>
+          <small *ngIf="_auth.currentUser">{{_auth.currentUser.name}}</small>
+        </ion-avatar>
+      </ion-item>
+      <button menuClose ion-item *ngFor="let item of paginas" (click)="abrirPagina(item)">
+        {{item.titulo}}
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
