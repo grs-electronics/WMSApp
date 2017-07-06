@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      Dashboard
+      Home
     </ion-title>
   </ion-navbar>
   <ion-toolbar no-border-top>
@@ -16,7 +16,7 @@
         Entrada
       </ion-segment-button>
       <ion-segment-button value="Devolucion">
-        Devolucion
+        Devolución
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -27,20 +27,21 @@
    <ion-refresher-content  pullingText="Actualizando Tareas...">
    </ion-refresher-content>
  </ion-refresher>
+ <ion-searchbar [(ngModel)]="busqueda"></ion-searchbar>
 
+<!-- Inicio: Opción de Entrega -->
     <div *ngIf="tipoTarea=='Entrega'" >
       <div [hidden]="!loading" text-center padding>
        <ion-spinner></ion-spinner>
       </div>
-      <ion-searchbar [(ngModel)]="busqueda"></ion-searchbar>
       <ion-list [hidden]="loading">
         <ion-item-sliding *ngFor="let item of listarEntregas | Tareasearch:busqueda;">
           <button ion-item (click)="confirmDialog(item)">
             <ion-icon name="ios-clipboard-outline" item-left></ion-icon>
-            <h4>{{item.tipo}} - <small># {{item.documento.DocNum}}</small></h4>
+            <h4>{{item.tipo}} - <small># {{item.documento.docNum}}</small></h4>
             <small><b>Trans.</b> {{item.transporte.nombre}} - <b>Plac.</b> {{item.transporte.placas}}</small>
             <!--<small>{{item.fechaAsignacion | date:'medium' }}</small>-->
-            <p><strong>{{item.documento.CardName}}</strong></p>
+            <p><strong>{{item.documento.cardName}}</strong></p>
             <ion-badge item-right *ngIf="item.prioridad==='Urgente'" color="danger">{{item.prioridad}}</ion-badge>
             <ion-badge item-right *ngIf="item.prioridad==='Alta'" color="secondary">{{item.prioridad}}</ion-badge>
             <ion-badge item-right *ngIf="item.prioridad==='Media'">{{item.prioridad}}</ion-badge>
@@ -59,16 +60,22 @@
         </ion-item-sliding>
       </ion-list>
     </div>
+<!-- Fin: Opción de Entrega -->
+
+<!-- Inicio: Opción de Entrada -->
     <div  *ngIf="tipoTarea=='Entrada'">
         <div [hidden]="!loading" text-center padding>
          <ion-spinner></ion-spinner>
         </div>
         <ion-list [hidden]="loading">
-        <ion-searchbar [(ngModel)]="busqueda"></ion-searchbar>
-        <ion-item-sliding *ngFor="let item of this.listaEntrada;">
-          <button ion-item>
+        <ion-item-sliding *ngFor="let item of this.listaEntrada | Tareasearch:busqueda">
+          <button ion-item (click)="confirmDialogEntrada(item)">
             <ion-icon name="ios-clipboard-outline" item-left></ion-icon>
-            <h4>{{item.tipo}} - <small>  <ion-icon name="calendar"></ion-icon> {{item.fechaAsignacion}}</small></h4>
+            <h4> <small><b>#{{item.detalleTarea[0].docNum}} - <ion-icon name="calendar"></ion-icon> </b> {{item.detalleTarea[0].eTA}}</small></h4>
+            <p><strong>{{item.detalleTarea[0].articulo}}</strong></p>
+            <h6><small>  <ion-icon name="bus"></ion-icon> </small> <strong>{{item.detalleTarea[0].contenedor}}</strong> </h6>
+            <ion-badge item-right color="light">Cant. {{item.detalleTarea[0].cantidad|number:'.0'}}</ion-badge>
+
             <ion-badge item-right *ngIf="item.prioridad==='Urgente'" color="danger">{{item.prioridad}}</ion-badge>
             <ion-badge item-right *ngIf="item.prioridad==='Alta'" color="secondary">{{item.prioridad}}</ion-badge>
             <ion-badge item-right *ngIf="item.prioridad==='Media'">{{item.prioridad}}</ion-badge>
@@ -87,8 +94,10 @@
         </ion-item-sliding>
       </ion-list>
     </div>
+<!-- Fin: Opción Entrada -->
+<!-- Inicio: Opción de Devolución -->
     <div  *ngIf="tipoTarea=='Devolucion'">
       Devolucion
     </div>
-
+<!-- Fin: Opción de Devolución -->
 </ion-content>

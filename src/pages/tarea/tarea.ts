@@ -61,24 +61,25 @@ export class TareaPage{
           this._articuloService.validarArticulo(this.codigo).subscribe(data=>{
               if(data.length>0){
                   for(let item in this.tarea.detalleTarea){
-                      if(this.tarea.detalleTarea[item].Articulo==data[0].ItemCode){
+                      if(this.tarea.detalleTarea[item].articulo==data[0].itemCode){
                           this.solucionTarea=new SolucionTarea();
-                          this.solucionTarea.Articulo=data[0].ItemCode;
-                          this.solucionTarea.bodega=data[0].CodigoDeBodega;
-                          this.solucionTarea.numeroDeSerie=data[0].NumeroDeSerie;
+                          this.solucionTarea.articulo=data[0].itemCode;
+                          this.solucionTarea.bodega=data[0].codigoDeBodega;
+                          this.solucionTarea.numeroDeSerie=data[0].numeroDeSerie;
+                          this.solucionTarea.linea=this.tarea.detalleTarea[item].linea;
                           let serieExistente:boolean=false;
                           for(let i in this.tarea.solucionTarea){
-                            if(this.tarea.solucionTarea[i].numeroDeSerie==data[0].NumeroDeSerie){
+                            if(this.tarea.solucionTarea[i].numeroDeSerie==data[0].numeroDeSerie){
                               serieExistente=true;
                             }
                           }
                           if(!serieExistente){
                               this.tarea.solucionTarea.push(this.solucionTarea);
-                              if(this.tarea.detalleTarea[item].Solucion!==this.tarea.detalleTarea[item].Asignado){
-                                  this.tarea.detalleTarea[item].Solucion=Number(this.tarea.detalleTarea[item].Solucion)+1;
-                                  this.tarea.detalleTarea[item].Pendiente=Number(this.tarea.detalleTarea[item].Pendiente)-1;
-                                  this.tarea.detalleTarea[item].Entregado=Number(this.tarea.detalleTarea[item].Entregado)+1;
-                                  this.tarea.documento.Entregado+1;
+                              if(this.tarea.detalleTarea[item].solucion!==this.tarea.detalleTarea[item].asignado){
+                                  this.tarea.detalleTarea[item].solucion=Number(this.tarea.detalleTarea[item].solucion)+1;
+                                  this.tarea.detalleTarea[item].pendiente=Number(this.tarea.detalleTarea[item].pendiente)-1;
+                                  this.tarea.detalleTarea[item].entregado=Number(this.tarea.detalleTarea[item].entregado)+1;
+                                  this.tarea.documento.entregado+1;
                               }
                           }else{
                             this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
@@ -103,24 +104,25 @@ export class TareaPage{
         let serie:Serie=this._offlineServie.busquedaSerie(this.codigo);
         if(serie!==undefined){
           for(let item in this.tarea.detalleTarea){
-              if(this.tarea.detalleTarea[item].Articulo==serie.ItemCode){
+              if(this.tarea.detalleTarea[item].articulo==serie.itemCode){
                   this.solucionTarea=new SolucionTarea();
-                  this.solucionTarea.Articulo=serie.ItemCode;
-                  this.solucionTarea.bodega=serie.CodigoDeBodega;
-                  this.solucionTarea.numeroDeSerie=serie.NumeroDeSerie;
+                  this.solucionTarea.articulo=serie.itemCode;
+                  this.solucionTarea.bodega=serie.codigoDeBodega;
+                  this.solucionTarea.numeroDeSerie=serie.numeroDeSerie;
+                  this.solucionTarea.linea=this.tarea.detalleTarea[item].linea;
                   let serieExistente:boolean=false;
                   for(let i in this.tarea.solucionTarea){
-                    if(this.tarea.solucionTarea[i].numeroDeSerie==serie.NumeroDeSerie){
+                    if(this.tarea.solucionTarea[i].numeroDeSerie==serie.numeroDeSerie){
                       serieExistente=true;
                     }
                   }
                   if(!serieExistente){
                       this.tarea.solucionTarea.push(this.solucionTarea);
-                      if(this.tarea.detalleTarea[item].Solucion!==this.tarea.detalleTarea[item].Asignado){
-                          this.tarea.detalleTarea[item].Solucion=Number(this.tarea.detalleTarea[item].Solucion)+1;
-                          this.tarea.detalleTarea[item].Pendiente=Number(this.tarea.detalleTarea[item].Pendiente)-1;
-                          this.tarea.detalleTarea[item].Entregado=Number(this.tarea.detalleTarea[item].Entregado)+1;
-                          this.tarea.documento.Entregado+1;
+                      if(this.tarea.detalleTarea[item].solucion!==this.tarea.detalleTarea[item].asignado){
+                          this.tarea.detalleTarea[item].solucion=Number(this.tarea.detalleTarea[item].solucion)+1;
+                          this.tarea.detalleTarea[item].pendiente=Number(this.tarea.detalleTarea[item].pendiente)-1;
+                          this.tarea.detalleTarea[item].entregado=Number(this.tarea.detalleTarea[item].entregado)+1;
+                          this.tarea.documento.entregado+1;
                       }
                   }else{
                     this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
@@ -150,10 +152,10 @@ export class TareaPage{
     modal.onDidDismiss(data=>{
       for(let index in this.tarea.detalleTarea){
         for(let i in data){
-          if(this.tarea.detalleTarea[index].Articulo===data[i].Articulo){
-            this.tarea.detalleTarea[index].Pendiente=Number(this.tarea.detalleTarea[index].Pendiente)+1;
-            this.tarea.detalleTarea[index].Solucion=Number(this.tarea.detalleTarea[index].Solucion)-1;
-            this.tarea.detalleTarea[index].Entregado=Number(this.tarea.detalleTarea[index].Entregado)-1;
+          if(this.tarea.detalleTarea[index].articulo===data[i].articulo){
+            this.tarea.detalleTarea[index].pendiente=Number(this.tarea.detalleTarea[index].pendiente)+1;
+            this.tarea.detalleTarea[index].solucion=Number(this.tarea.detalleTarea[index].solucion)-1;
+            this.tarea.detalleTarea[index].entregado=Number(this.tarea.detalleTarea[index].entregado)-1;
           }
         }
       }
@@ -172,6 +174,9 @@ export class TareaPage{
             this.tarea.estado='Finalizada';
             this.tarea.fechaFinalizacion='' + new Date().toLocaleString();
             this._tareaService.actualizarEntregas(this.tarea).subscribe(data=>{});
+            this._tareaService.finalizarTarea(this.tarea).subscribe(notify=>{
+              console.log(notify);
+            });
             this.navCtrl.setRoot(HomePage);
           }
         },

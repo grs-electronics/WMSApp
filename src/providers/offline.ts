@@ -22,6 +22,6 @@ export class OfflineService {
     return series.find((item)=>this.validarSerie(item,serie));
   }
   public validarSerie(item:Serie,serie:string){
-    return item.NumeroDeSerie===serie;
+    return item.numeroDeSerie===serie;
   }
 }

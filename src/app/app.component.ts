@@ -8,17 +8,19 @@ import {HomePage} from '../pages/home/home';
 import {AuthService} from '../providers/auth';
 import { AlertController } from 'ionic-angular';
 import {OfflineService} from '../providers/offline';
+import {ConfiguracionPage} from '../pages/configuracion/configuracion';
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage:any = LoginPage;
-  paginas:Array<{titulo:string,component:any}>;
+  paginas:Array<{titulo:string,component:any,icon:any}>;
   constructor(public platform: Platform,public statusBar: StatusBar, public splashScreen: SplashScreen, public _auth:AuthService,private network: Network,public alertCtrl: AlertController,private _offline:OfflineService) {
     this.initializeApp();
     this.paginas=[
-      {titulo:'Dashboard',component:HomePage}
+      {titulo:'Home',component:HomePage,icon:'home'},
+      {titulo:'Configuración',component:ConfiguracionPage,icon:'cog'}
     ];
   }
 
@@ -30,7 +32,7 @@ export class MyApp {
        this.splashScreen.hide();
 
      });
-     let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+     this.network.onDisconnect().subscribe(() => {
        this._offline.setEstado(false);
         this.alertCtrl.create({
            title: 'Conexión de Red Interrumpida!',
@@ -38,7 +40,7 @@ export class MyApp {
            buttons: ['OK']
          }).present();
       });
-      let connectSubscription = this.network.onConnect().subscribe(() => {
+      this.network.onConnect().subscribe(() => {
           setTimeout(() => {
             if (this.network.type === 'wifi') {
               this._offline.setEstado(true);

@@ -17,6 +17,11 @@ export class TareaService {
     return this._http.put('https://'+window.localStorage.getItem('server')+'/api/tarea',tarea).map((res:Response)=>res.json());
   }
 
+  finalizarTarea(tarea:Tarea){
+    console.log(tarea);
+    return this._http.post('http://192.168.10.17:8089/entrega',tarea).map((res:Response)=>res.json());
+  }
+
   listarEntrada(id:string){
     return  this._http.get('https://'+window.localStorage.getItem('server')+'/api/tareaOperarioEntrada?_id='+id).map((res:Response)=>res.json());
   }

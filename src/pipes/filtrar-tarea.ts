@@ -19,9 +19,18 @@ export class FiltrarTarea implements PipeTransform {
       return lista;
     }
     lista.forEach(function(tarea){
-      if(tarea.documento.DocNum.toString().match(new RegExp(filtro,'i'))  ||  tarea.tipo.toString().match(new RegExp(filtro,'i'))){
-        listaCoincidencias.push(tarea);
+      if(tarea.tipo==='Entrega'){
+        console.log(tarea.tipo);
+        if(tarea.documento.docNum.toString().match(new RegExp(filtro,'i'))  ||  tarea.tipo.toString().match(new RegExp(filtro,'i'))){
+          listaCoincidencias.push(tarea);
+        }
+      }else if(tarea.tipo==='Entrada'){
+        console.log(tarea.tipo);
+        if(tarea.detalleTarea[0].docNum.toString().match(new RegExp(filtro,'i'))  ||  tarea.tipo.toString().match(new RegExp(filtro,'i'))){
+          listaCoincidencias.push(tarea);
+        }
       }
+
     });
     return listaCoincidencias;
   }

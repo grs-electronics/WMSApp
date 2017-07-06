@@ -3,9 +3,9 @@
  */
 export class DetalleTarea{
   articulo:{
-    ItemCode:string,
-    Dscription:string,
-    Quantity:string
+    itemCode:string,
+    dscription:string,
+    quantity:string
   };
   asignado:string;
   constructor(){}

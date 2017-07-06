@@ -1,6 +1,6 @@
 export class Serie{
-  ItemCode?:string;
-  NumeroDeSerie?:string;
-  CodigoDeBodega?:string;
+  itemCode?:string;
+  numeroDeSerie?:string;
+  codigoDeBodega?:string;
   constructor(){}
 }

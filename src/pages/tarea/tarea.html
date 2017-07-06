@@ -11,10 +11,10 @@
             <ion-icon class="customIcon" name="arrow-back"></ion-icon>
         </button>
     </ion-buttons>
-    <ion-title>Tarea Iniciada</ion-title>
+    <ion-title>Picking Iniciado</ion-title>
     <ion-buttons end>
       <button ion-button icon-only color="royal" (click)="finalizarTarea()">
-        <ion-icon name="md-open"></ion-icon>
+        <ion-icon name="document"></ion-icon>
       </button>
     </ion-buttons>
  </ion-navbar>
@@ -35,16 +35,16 @@
       </ion-note>
     </ion-item>
   </ion-list>
-  <ion-item-divider  color="light">Buscar Productos en Bodega No. <ion-badge >{{tarea.documento.Bodega}}</ion-badge></ion-item-divider>
+  <ion-item-divider  color="light">Buscar Productos en Bodega No. <ion-badge >{{tarea.documento.bodega}}</ion-badge></ion-item-divider>
   <ion-list inset >
     <ion-list-header>
         Listado de Artículos
     </ion-list-header>
     <ion-item-sliding *ngFor="let item of tarea.detalleTarea"  >
       <button ion-item >
-          {{item.Articulo }}
-          <ion-badge *ngIf="item.Solucion<item.Asignado" item-right color="danger">{{item.Solucion| number:'.0' }}/{{item.Asignado | number:'.0'}}</ion-badge>
-          <ion-badge *ngIf="item.Solucion===item.Asignado" item-right color="secondary" >{{item.Solucion | number:'.0'}}/{{item.Asignado | number:'.0' }}</ion-badge>
+          {{item.articulo }}
+          <ion-badge *ngIf="item.solucion<item.asignado" item-right color="danger">{{item.solucion| number:'.0' }}/{{item.asignado | number:'.0'}}</ion-badge>
+          <ion-badge *ngIf="item.solucion===item.asignado" item-right color="secondary" >{{item.solucion | number:'.0'}}/{{item.asignado | number:'.0' }}</ion-badge>
       </button>
       <ion-item-options side="right">
         <button ion-button (click)="modalDetallePicking(item)">

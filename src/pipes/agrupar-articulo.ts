@@ -17,7 +17,7 @@ export class AgruparArticulo implements PipeTransform {
    public tmp:Array<any>=new Array<any>();
    transform(lista:Array<SolucionTarea>,campo:string):Array<any> {
       this.tmp.length = 0;
-      let arr =lista.filter((articulo)=>new RegExp(campo).test(articulo.Articulo));
+      let arr =lista.filter((articulo)=>new RegExp(campo).test(articulo.articulo));
       this.tmp.push(...arr);
       return this.tmp;
   }

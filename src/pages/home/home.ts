@@ -7,7 +7,7 @@ import {Tarea} from '../../model/tarea';
 import {TareaPage} from '../tarea/tarea';
 import { AlertController } from 'ionic-angular';
 import {TareaDetallePage} from '../../pages/tarea-detalle/tarea-detalle';
-
+import {TareaEntradaPage} from '../../pages/tarea-entrada/tarea-entrada';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -111,4 +111,33 @@ export class HomePage implements OnInit{
     let modalDetalle=this.modalCtrl.create(TareaDetallePage,{_tarea:tarea});
     modalDetalle.present();
   }
+
+
+  iniciarTareaEntrada(tarea:Tarea){
+    this.navCtrl.push(TareaEntradaPage,{tarea:tarea});
+  }
+
+  confirmDialogEntrada(tarea:Tarea) {
+   let confirm = this.alertCtrl.create({
+     title: 'Iniciar Tarea',
+     message: '¿Esta seguro que quiere iniciar la tarea?',
+     buttons: [
+       {
+         text: 'Aceptar',
+         handler: () => {
+           console.log('aceptar clicked');
+           this.iniciarTareaEntrada(tarea);
+         }
+       },
+       {
+         text: 'Cancelar',
+         handler: () => {
+           console.log('cancelar clicked');
+         }
+       }
+     ]
+   });
+   confirm.present();
+  }
+
 }

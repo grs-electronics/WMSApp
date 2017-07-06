@@ -1,5 +1,5 @@
 import {Component } from '@angular/core';
-import {NavController,AlertController  } from 'ionic-angular';
+import {NavController,AlertController,ToastController } from 'ionic-angular';
 import {AuthService} from '../../providers/auth';
 import {Usuario} from '../../model/usuario';
 import {HomePage} from '../../pages/home/home';
@@ -12,17 +12,31 @@ export class LoginPage {
   constructor(
       public navCtrl: NavController,
       public _auth:AuthService,
-      public alertCtrl: AlertController) {
+      public alertCtrl: AlertController,
+      public toastCtrl: ToastController) {
   }
 
 
   public login(){
-    this._auth.login(this.usuario).then(data=>{
-      if(data){
-        this._auth.isAuthenticated=true;
-        this.navCtrl.setRoot(HomePage);
-      }
-    });
+    if(this.usuario.username && this.usuario.password){
+      this._auth.login(this.usuario).then(data=>{
+        if(data){
+          this._auth.isAuthenticated=true;
+          this.navCtrl.setRoot(HomePage);
+        }else{
+          this.toastCtrl.create({
+             message: '¡Verifique sus credenciales!',
+             duration: 3000
+           }).present();
+        }
+      });
+    }else{
+      this.toastCtrl.create({
+         message: '¡Para ingresar es necesario tener credenciales!',
+         duration: 3000,
+         position: 'bottom'
+       }).present();
+    }
   }
   ionViewCanEnter() {
     return !this._auth.isAuthenticated;

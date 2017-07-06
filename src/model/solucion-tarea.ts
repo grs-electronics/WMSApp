@@ -1,6 +1,7 @@
 export class SolucionTarea{
-  Articulo:string;
+  articulo:string;
   numeroDeSerie:string;
   bodega:string;
+  linea:string;
   constructor(){}
 }

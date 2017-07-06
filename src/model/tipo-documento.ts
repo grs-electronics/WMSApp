@@ -2,15 +2,15 @@
  * Created by retana on 26/05/2017.
  */
 export class TipoDocumento{
-  Asignado?:string;
-  Bodega?:string;
+  asignado?:string;
+  bodega?:string;
   nombre:string;
-  Entrega?:string;
-  CardName?:string;
-  DocStatus?:string;
-  Canceled?:string;
-  DocNum?:string;
-  DocEntry?:string;
-  Entregado?:string;
+  entrega?:string;
+  cardName?:string;
+  docStatus?:string;
+  canceled?:string;
+  docNum?:string;
+  docEntry?:string;
+  entregado?:string;
   constructor(nombre:string){this.nombre=nombre;}
 }

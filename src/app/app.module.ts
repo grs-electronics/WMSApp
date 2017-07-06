@@ -21,6 +21,9 @@ import {LoginPage} from '../pages/login/login';
 import {TareaPage} from '../pages/tarea/tarea';
 import {TareaDetallePage} from '../pages/tarea-detalle/tarea-detalle';
 import {DetallePickingPage} from '../pages/detalle-picking/detalle-picking';
+import {TareaEntradaPage} from '../pages/tarea-entrada/tarea-entrada';
+import {ConfiguracionPage} from '../pages/configuracion/configuracion';
+
 //Services - Providers
 import {AuthService} from '../providers/auth';
 import {TareaService} from '../providers/tarea';
@@ -40,7 +43,9 @@ import {FiltrarTarea} from '../pipes/filtrar-tarea';
     DetallePickingPage,
     AgruparArticulo,
     FocusDirective,
-    FiltrarTarea
+    FiltrarTarea,
+    TareaEntradaPage,
+    ConfiguracionPage
   ],
   imports: [
     BrowserModule,
@@ -54,7 +59,9 @@ import {FiltrarTarea} from '../pipes/filtrar-tarea';
     HomePage,
     TareaPage,
     TareaDetallePage,
-    DetallePickingPage
+    DetallePickingPage,
+    TareaEntradaPage,
+    ConfiguracionPage
   ],
   providers: [
     StatusBar,

@@ -22,25 +22,25 @@
     <ion-item>
         <ion-icon name="ios-list-box-outline" item-left color="primary"></ion-icon>
         <h6>No. de {{detalleTarea.tipo}}</h6>
-        <small>{{detalleTarea.documento.DocEntry}}</small>
+        <small>{{detalleTarea.documento.docEntry}}</small>
      </ion-item>
     <ion-item>
         <ion-icon name="ios-contact-outline" item-left color="primary"></ion-icon>
         <h6>Cliente</h6>
-        <small>{{detalleTarea.documento.CardName}}</small>
+        <small>{{detalleTarea.documento.cardName}}</small>
      </ion-item>
      <ion-item>
          <ion-icon name="ios-bus-outline" item-left color="primary"></ion-icon>
          <h6>Dirección</h6>
-         <small>{{detalleTarea.documento.Direccion}}</small>
+         <small>{{detalleTarea.documento.direccion}}</small>
       </ion-item>
   </ion-list>
   <ion-item-group>
       <ion-item-divider color="primary" clear> <ion-icon name="md-cart" item-left></ion-icon> Productos de {{detalleTarea.tipo}}</ion-item-divider>
       <ion-item *ngFor="let item of detalleTarea.detalleTarea">
         <ion-icon name="ios-image-outline" item-left color="primary"></ion-icon>
-        <h6>{{item.Articulo}}</h6>
-        <small>{{item.Descripcion}}</small>
+        <h6>{{item.articulo}}</h6>
+        <small>{{item.descripcion}}</small>
       </ion-item>
   </ion-item-group>
   <ion-item-group>

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http,Headers,Response } from '@angular/http';
+import {ToastController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import {Usuario} from '../model/usuario';
+import {Observable} from "rxjs";
+
 /*
   Generated class for the Auth provider.
 
@@ -14,7 +17,7 @@ export class AuthService {
   data:any;
   isAuthenticated: boolean = false;
 
-  constructor(public _http: Http) {}
+  constructor(public _http: Http,private toastCtrl: ToastController) {}
 
   public obtenerSeries(){
       this._http.get('https://'+window.localStorage.getItem('server')+'/api/series').map((res:Response)=>res.json()).subscribe(data=>{
@@ -52,6 +55,13 @@ export class AuthService {
                 this.obtenerSeries();
               }
                 resolve(this.isAuthenticated);
+            },
+            (err)=>{
+              this.toastCtrl.create({
+                message: this.extractData(err).error_description,
+                duration: 3000,
+                position: 'bottom'
+              }).present();
             }
         );
     });
@@ -60,7 +70,14 @@ export class AuthService {
   userInfo(){
     let headers = new Headers();
     headers.append('Authorization','Basic Y2xpZW50X3h4OnNlY3JldF95eQ==');
-    return this._http.get('https://'+window.localStorage.getItem('server')+'/api/userinfo?access_token='+window.localStorage.getItem('access_token'),{headers:headers})
-      .map((res:Response)=>res.json());
+    return this._http.get('https://'+window.localStorage.getItem('server')+'/api/userinfo?access_token='+window.localStorage.getItem('access_token'),{headers:headers}).map(this.extractData).catch(this.handleErrorObservable);
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+  return body|| {};
+  }
+  private handleErrorObservable (error: Response | any) {
+    return Observable.throw(error.message || error);
   }
 }
