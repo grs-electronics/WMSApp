@@ -21,12 +21,12 @@ export class FiltrarTarea implements PipeTransform {
     lista.forEach(function(tarea){
       if(tarea.tipo==='Entrega'){
         console.log(tarea.tipo);
-        if(tarea.documento.docNum.toString().match(new RegExp(filtro,'i'))  ||  tarea.tipo.toString().match(new RegExp(filtro,'i'))){
+        if(tarea.documento.docNum.toString().match(new RegExp(filtro,'i'))  ||  tarea.tipo.toString().match(new RegExp(filtro,'i'))  ||tarea.transporte.nombre.toString().match(new RegExp(filtro,'i')) ){
           listaCoincidencias.push(tarea);
         }
       }else if(tarea.tipo==='Entrada'){
         console.log(tarea.tipo);
-        if(tarea.detalleTarea[0].docNum.toString().match(new RegExp(filtro,'i'))  ||  tarea.tipo.toString().match(new RegExp(filtro,'i'))){
+        if(tarea.detalleTarea[0].docNum.toString().match(new RegExp(filtro,'i'))  ||  tarea.tipo.toString().match(new RegExp(filtro,'i'))  ){
           listaCoincidencias.push(tarea);
         }
       }

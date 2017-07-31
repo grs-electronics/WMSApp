@@ -23,7 +23,7 @@ export class DetallePickingPage {
 
   }
 
-  eliminarSerie(item:any){
+  eliminarSerie(item:SolucionTarea){
     this.elementos.lista.splice(this.elementos.lista.indexOf(item),1);
     this.eliminarSolucion.push(item);
   }

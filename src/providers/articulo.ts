@@ -17,4 +17,9 @@ export class ArticuloService {
   validarArticulo(ItemCode:string){
     return this.http.get('https://'+window.localStorage.getItem('server')+'/api/articuloVerificar?articulo='+ItemCode).map((res:Response)=>res.json())
   }
+
+  validarSKU(SKU:string){
+    this.http.get('https://'+window.localStorage.getItem('server')+'/api/verificarSKU?sku='+SKU).map((res:Response)=>res.json());
+  }
+
 }

@@ -6,7 +6,7 @@
   "proxies": [
   {
       "path": "/api/*",
-      "proxyUrl": "https://localhost:5000",
+      "proxyUrl": "https://192.168.10.16:5000",
       "secure":false,
       "logLevel":"debug"
   }

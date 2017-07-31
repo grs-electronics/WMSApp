@@ -67,6 +67,9 @@ export class AuthService {
     });
   }
 
+  logout(){
+
+  }
   userInfo(){
     let headers = new Headers();
     headers.append('Authorization','Basic Y2xpZW50X3h4OnNlY3JldF95eQ==');
@@ -80,4 +83,5 @@ export class AuthService {
   private handleErrorObservable (error: Response | any) {
     return Observable.throw(error.message || error);
   }
+
 }

@@ -39,8 +39,6 @@ export class TareaPage{
     },(err)=>{console.error(err)});
   }
 
-  ionViewDidLoad() {
-  }
 
   goBack(){
     this.tarea.estado='Pausada';
@@ -53,6 +51,7 @@ export class TareaPage{
     event.preventDefault();
     event.stopPropagation();
   }
+
   onSerie(event,input){
     event.stopPropagation();
     if(event.key==='Tab' || event.key==='Enter' || event.keyCode==13){
@@ -177,6 +176,11 @@ export class TareaPage{
             this._tareaService.finalizarTarea(this.tarea).subscribe(notify=>{
               console.log(notify);
             });
+            this.toastCtrl.create({
+              message: 'Entrega Enviada Correctamente!! ',
+              duration: 3000,
+              position: 'bottom'
+            }).present();
             this.navCtrl.setRoot(HomePage);
           }
         },

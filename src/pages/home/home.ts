@@ -8,6 +8,7 @@ import {TareaPage} from '../tarea/tarea';
 import { AlertController } from 'ionic-angular';
 import {TareaDetallePage} from '../../pages/tarea-detalle/tarea-detalle';
 import {TareaEntradaPage} from '../../pages/tarea-entrada/tarea-entrada';
+import {Function} from '../../utils/functions';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -16,10 +17,9 @@ export class HomePage implements OnInit{
   public listarEntregas:Observable<Array<Tarea>>;
   public listaEntrada:Observable<Array<Tarea>>;
   public loading:boolean;
-  public prueba:[1,2,3,4,5,6,7,8,9];
   @Input() busqueda:string="";
   public tipoTarea:string='Entrega';
-
+  public listadoEntregasAux:Array<Tarea>;
   constructor(
         public navCtrl: NavController,
         public _auth:AuthService,
@@ -38,7 +38,13 @@ export class HomePage implements OnInit{
 
          this._tarea.listarEntrada(this._auth.currentUser.user_id).subscribe(datos=>this.listaEntrada=datos);
 
-         this._tarea.listarEntregas(this._auth.currentUser.user_id).subscribe(data=>this.listarEntregas=data);
+         this._tarea.listarEntregas(this._auth.currentUser.user_id).subscribe(data=>{
+           this.listarEntregas=data;
+           this.listadoEntregasAux=data;
+           this.listadoEntregasAux=Function.distinct(this.listadoEntregasAux);
+           console.log("Aux",this.listadoEntregasAux);
+           console.log("other",this.listarEntregas);
+         });
 
          subscription.unsubscribe();
 
@@ -51,7 +57,11 @@ export class HomePage implements OnInit{
        data=>{
          //Entrega
          this._auth.currentUser=data;
-         this._tarea.listarEntregas(this._auth.currentUser.user_id).subscribe(data=>this.listarEntregas=data);
+         this._tarea.listarEntregas(this._auth.currentUser.user_id).subscribe(data=>{
+           this.listarEntregas=data;
+           this.listadoEntregasAux=data;
+           this.listadoEntregasAux=Function.distinct(this.listadoEntregasAux);
+         });
          //Entrada
          this._tarea.listarEntrada(this._auth.currentUser.user_id).subscribe(data=>this.listaEntrada=data);
          subscription.unsubscribe();
@@ -125,14 +135,12 @@ export class HomePage implements OnInit{
        {
          text: 'Aceptar',
          handler: () => {
-           console.log('aceptar clicked');
            this.iniciarTareaEntrada(tarea);
          }
        },
        {
          text: 'Cancelar',
          handler: () => {
-           console.log('cancelar clicked');
          }
        }
      ]

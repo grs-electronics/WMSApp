@@ -14,28 +14,42 @@
     </ion-buttons>
     <ion-title>Picking Iniciado</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only color="royal">
+      <button ion-button icon-only color="royal" (click)="finalizarTarea()">
         <ion-icon name="document"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-  <ion-list>
-    <ion-item>
-      <ion-icon name="barcode" item-left></ion-icon>
-      <ion-label floating>SKU</ion-label>
-      <ion-input type="text" value="" autofocus   #input ></ion-input>
-    </ion-item>
-  </ion-list>
+  <form>
   <ion-list>
     <ion-item>
       <ion-icon name="barcode" item-left></ion-icon>
       <ion-label floating>Código</ion-label>
-      <ion-input type="text" value="" autofocus  #input ></ion-input>
+        <ion-input type="text" value="" name="codigo" [(ngModel)]="codigo" autofocus  #input (focusout)="onFocusOut($event)" (keydown)="onSerie($event,input,data)" ></ion-input>
     </ion-item>
+  </ion-list>
+</form>
+  <ion-list radio-group #data [(ngModel)]="solucionTarea">
+    <ion-list-header>
+        Listado de Artículos
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let item of tarea.detalleTarea"  >
+      <ion-item>
+          <ion-label>
+            {{item.articulo }}
+            <ion-badge *ngIf="item.solucion<item.cantidad" item-right color="danger">{{item.solucion| number:'.0' }}/{{item.cantidad | number:'.0'}}</ion-badge>
+            <ion-badge *ngIf="item.solucion==item.cantidad" item-right color="secondary" >{{item.solucion | number:'.0'}}/{{item.cantidad | number:'.0' }}</ion-badge>
+          </ion-label>
+          <ion-radio [value]="item"></ion-radio>
+      </ion-item>
+      <ion-item-options  side="right">
+        <button ion-button (click)="modalDetallePicking(item)">
+          <ion-icon name="ios-list-box-outline"></ion-icon>
+          Detalles
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

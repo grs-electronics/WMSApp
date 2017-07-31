@@ -32,6 +32,7 @@ import {OfflineService} from '../providers/offline';
 //Pipes
 import {AgruparArticulo} from '../pipes/agrupar-articulo';
 import {FiltrarTarea} from '../pipes/filtrar-tarea';
+import {DistinctPipe} from '../pipes/distinct';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {FiltrarTarea} from '../pipes/filtrar-tarea';
     AgruparArticulo,
     FocusDirective,
     FiltrarTarea,
+    DistinctPipe,
     TareaEntradaPage,
     ConfiguracionPage
   ],
