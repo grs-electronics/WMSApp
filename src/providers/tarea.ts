@@ -19,9 +19,9 @@ export class TareaService {
 
   finalizarTarea(tarea:Tarea){
     if(tarea.tipo==='Entrega'){
-        return this._http.post('http://localhost:8089/entrega',tarea).map((res:Response)=>res.json());
+        return this._http.post('http://192.168.10.17:8089/entrega',tarea).map((res:Response)=>res.json());
     }else if(tarea.tipo='Entrada'){
-      return this._http.post('http://localhost:8089/entrada',tarea).map((res:Response)=>res.json());
+      return this._http.post('http://192.168.10.17:8089/entrada',tarea).map((res:Response)=>res.json());
     }
 
   }

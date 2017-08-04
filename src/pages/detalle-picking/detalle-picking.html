@@ -22,9 +22,9 @@
     <ion-list-header>
       Picking de Series
     </ion-list-header>
-    <ion-item-sliding  *ngFor="let item of elementos.lista  | filtrar:elementos.picking.articulo:elementos.picking.linea">
+    <ion-item-sliding  *ngFor="let item of elementos.lista| filtrar:elementos.picking.articulo:elementos.picking.linea;let i=index">
         <button ion-item>
-            {{item.numeroDeSerie}}
+            {{i+1}} - {{item.numeroDeSerie}}
             <ion-badge item-right color="secondary" >Bodega {{item.bodega}}</ion-badge>
         </button>
         <ion-item-options side="right">

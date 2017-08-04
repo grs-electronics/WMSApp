@@ -34,31 +34,39 @@
       <div [hidden]="!loading" text-center padding>
        <ion-spinner></ion-spinner>
       </div>
-      <ion-list [hidden]="loading">
-        <ion-item-sliding *ngFor="let item of listarEntregas | Tareasearch:busqueda;">
-          <button ion-item (click)="confirmDialog(item)">
-            <ion-icon name="ios-clipboard-outline" item-left></ion-icon>
-            <h4>{{item.tipo}} - <small># {{item.documento.docNum}}</small></h4>
-            <small><b>Trans.</b> {{item.transporte.nombre}} - <b>Plac.</b> {{item.transporte.placas}}</small>
-            <!--<small>{{item.fechaAsignacion | date:'medium' }}</small>-->
-            <p><strong>{{item.documento.cardName}}</strong></p>
-            <ion-badge item-right *ngIf="item.prioridad==='Urgente'" color="danger">{{item.prioridad}}</ion-badge>
-            <ion-badge item-right *ngIf="item.prioridad==='Alta'" color="secondary">{{item.prioridad}}</ion-badge>
-            <ion-badge item-right *ngIf="item.prioridad==='Media'">{{item.prioridad}}</ion-badge>
-            <ion-badge item-right *ngIf="item.prioridad==='Baja'" color="dark">{{item.prioridad}}</ion-badge>
-          </button>
-          <ion-item-options side="right">
-            <button ion-button color="secondary">
-              <ion-icon name="md-text"></ion-icon>
-              Comentar
-            </button>
-            <button ion-button color="light" (click)="modalDetalleTarea(item);">
-              <ion-icon name="ios-list-box-outline"></ion-icon>
-              Detalles
-            </button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
+        <ion-list [hidden]="loading" *ngFor="let tarea of listadoEntregasAux">
+          <ion-item-group>
+            <ion-item-divider color="light" >{{tarea.transporte.nombre}} - {{tarea.transporte.placas}} </ion-item-divider>
+            <ion-item-sliding *ngFor="let item of listarEntregas | distinct:tarea.transporte.nombre | Tareasearch:busqueda">
+              <button ion-item (click)="confirmDialog(item)">
+                <h4>{{item.tipo}} - <small># {{item.documento.docNum}}</small> <b> - </b> {{item.documento.zona_Entrega}}</h4>
+                <!--<small>{{item.fechaAsignacion | date:'medium' }}</small>-->
+                <p><strong>{{item.documento.cardName}}</strong></p>
+                <p>{{item.documento.direccion}} </p>
+                <ion-badge item-right  color="light">{{item.orden}}</ion-badge>
+                <ion-badge item-right *ngIf="item.prioridad==='Urgente'" color="danger">{{item.prioridad}}</ion-badge>
+                <ion-badge item-right *ngIf="item.prioridad==='Alta'" color="secondary">{{item.prioridad}}</ion-badge>
+                <ion-badge item-right *ngIf="item.prioridad==='Media'">{{item.prioridad}}</ion-badge>
+                <ion-badge item-right *ngIf="item.prioridad==='Baja'" color="dark">{{item.prioridad}}</ion-badge>
+              </button>
+              <ion-item-options side="right">
+                <button ion-button color="secondary">
+                  <ion-icon name="md-text"></ion-icon>
+                  Comentar
+                </button>
+                <button ion-button color="light" (click)="modalDetalleTarea(item);">
+                  <ion-icon name="ios-list-box-outline"></ion-icon>
+                  Detalles
+                </button>
+              </ion-item-options>
+              <ion-item-options side="left">
+                <button ion-button color="light">
+                  <ion-input  type="number" (focusout)="ordenEntrega(item)" [(ngModel)]="item.orden" placeholder="Orden" item-left></ion-input>
+                </button>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-item-group>
+        </ion-list>
     </div>
 <!-- Fin: Opción de Entrega -->
 
@@ -98,34 +106,7 @@
 <!-- Fin: Opción Entrada -->
 <!-- Inicio: Opción de Devolución -->
     <div  *ngIf="tipoTarea=='Devolucion'">
-      <ion-list *ngFor="let tarea of listadoEntregasAux">
-        <ion-item-group>
-          <ion-item-divider color="light" >{{tarea.transporte.nombre}}</ion-item-divider>
-          <ion-item-sliding *ngFor="let item of listarEntregas | distinct:tarea.transporte.nombre">
-            <button ion-item (click)="confirmDialog(item)">
-              <ion-icon name="ios-clipboard-outline" item-left></ion-icon>
-              <h4>{{item.tipo}} - <small># {{item.documento.docNum}}</small></h4>
-              <small><b>Trans.</b> {{item.transporte.nombre}} - <b>Plac.</b> {{item.transporte.placas}}</small>
-              <!--<small>{{item.fechaAsignacion | date:'medium' }}</small>-->
-              <p><strong>{{item.documento.cardName}}</strong></p>
-              <ion-badge item-right *ngIf="item.prioridad==='Urgente'" color="danger">{{item.prioridad}}</ion-badge>
-              <ion-badge item-right *ngIf="item.prioridad==='Alta'" color="secondary">{{item.prioridad}}</ion-badge>
-              <ion-badge item-right *ngIf="item.prioridad==='Media'">{{item.prioridad}}</ion-badge>
-              <ion-badge item-right *ngIf="item.prioridad==='Baja'" color="dark">{{item.prioridad}}</ion-badge>
-            </button>
-            <ion-item-options side="right">
-              <button ion-button color="secondary">
-                <ion-icon name="md-text"></ion-icon>
-                Comentar
-              </button>
-              <button ion-button color="light" (click)="modalDetalleTarea(item);">
-                <ion-icon name="ios-list-box-outline"></ion-icon>
-                Detalles
-              </button>
-            </ion-item-options>
-          </ion-item-sliding>
-        </ion-item-group>
-      </ion-list>
+
     </div>
 <!-- Fin: Opción de Devolución -->
 </ion-content>

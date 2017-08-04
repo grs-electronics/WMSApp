@@ -42,8 +42,7 @@ export class HomePage implements OnInit{
            this.listarEntregas=data;
            this.listadoEntregasAux=data;
            this.listadoEntregasAux=Function.distinct(this.listadoEntregasAux);
-           console.log("Aux",this.listadoEntregasAux);
-           console.log("other",this.listarEntregas);
+           console.log(this.listadoEntregasAux);
          });
 
          subscription.unsubscribe();
@@ -61,6 +60,7 @@ export class HomePage implements OnInit{
            this.listarEntregas=data;
            this.listadoEntregasAux=data;
            this.listadoEntregasAux=Function.distinct(this.listadoEntregasAux);
+           console.log(this.listadoEntregasAux);
          });
          //Entrada
          this._tarea.listarEntrada(this._auth.currentUser.user_id).subscribe(data=>this.listaEntrada=data);
@@ -83,6 +83,10 @@ export class HomePage implements OnInit{
   **/
   iniciarTareaEntrega(tarea:Tarea){
     this.navCtrl.push(TareaPage,{tarea:tarea});
+  }
+
+  ordenEntrega(tarea:Tarea){
+    this._tarea.actualizarEntregas(tarea).subscribe(data=>console.log(data));
   }
 
 /**

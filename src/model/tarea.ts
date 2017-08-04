@@ -19,6 +19,7 @@ export class Tarea {
   tipo: string;
   duracion:string='30';
   transporte:Transporte;
+  orden:string;
   solucionTarea:Array<SolucionTarea>=new Array<SolucionTarea>();
   __v:string;
   constructor(){}

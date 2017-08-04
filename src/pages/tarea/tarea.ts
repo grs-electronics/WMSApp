@@ -34,9 +34,13 @@ export class TareaPage{
     this.tarea=navParams.get('tarea');
     if(!this.tarea.solucionTarea)
       this.tarea.solucionTarea=new Array<SolucionTarea>();
-    this.nativeAudio.preloadSimple('errorsound', 'assets/audio/notification.mp3').then((success)=>{
-      this.nativeAudio.setVolumeForComplexAsset("errorsound", 0.3);
-    },(err)=>{console.error(err)});
+      this.nativeAudio.preloadSimple('errorsound', 'assets/audio/notification.mp3').then((success)=>{
+        this.nativeAudio.setVolumeForComplexAsset("errorsound", 0.3);
+      },(err)=>{console.error(err)});
+
+      this.nativeAudio.preloadSimple('beep', 'assets/audio/beep.mp3').then((success)=>{
+        this.nativeAudio.setVolumeForComplexAsset("beep", 0.3);
+      },(err)=>{console.error(err)});
   }
 
 
@@ -59,6 +63,7 @@ export class TareaPage{
         //Conexión Activa :Wifi status;
           this._articuloService.validarArticulo(this.codigo).subscribe(data=>{
               if(data.length>0){
+                for(let x in data ){
                   for(let item in this.tarea.detalleTarea){
                       if(this.tarea.detalleTarea[item].articulo==data[0].itemCode){
                           this.solucionTarea=new SolucionTarea();
@@ -73,12 +78,20 @@ export class TareaPage{
                             }
                           }
                           if(!serieExistente){
-                              this.tarea.solucionTarea.push(this.solucionTarea);
-                              if(this.tarea.detalleTarea[item].solucion!==this.tarea.detalleTarea[item].asignado){
+                              if(Number(this.tarea.detalleTarea[item].solucion)<Number(this.tarea.detalleTarea[item].asignado)){
+                                  this.nativeAudio.play('beep',()=>console.log('Beep Sound playing'));
+                                  this.tarea.solucionTarea.push(this.solucionTarea);
                                   this.tarea.detalleTarea[item].solucion=Number(this.tarea.detalleTarea[item].solucion)+1;
                                   this.tarea.detalleTarea[item].pendiente=Number(this.tarea.detalleTarea[item].pendiente)-1;
                                   this.tarea.detalleTarea[item].entregado=Number(this.tarea.detalleTarea[item].entregado)+1;
                                   this.tarea.documento.entregado+1;
+                                  serieExistente=false;
+                              }else{
+                                this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
+                                this.vibration.vibrate([2000,1000,2000]);
+                                this.mostrarError=true;
+                                this.mensajeDeError="Ya alcanzado el máximo de articulos solicitados del tipo escaneado.";
+                                setTimeout(()=>this.mostrarError=false,5000);
                               }
                           }else{
                             this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
@@ -89,6 +102,7 @@ export class TareaPage{
                           }
                       }
                   }
+                }
               }else{
                 //En caso de código no encontrado
                 this.vibration.vibrate([2000,1000,2000]);
