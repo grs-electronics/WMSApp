@@ -65,15 +65,15 @@ export class TareaPage{
               if(data.length>0){
                 for(let x in data ){
                   for(let item in this.tarea.detalleTarea){
-                      if(this.tarea.detalleTarea[item].articulo==data[0].itemCode){
+                      if(this.tarea.detalleTarea[item].articulo==data[x].itemCode && this.tarea.documento.bodega==data[x].codigoDeBodega){
                           this.solucionTarea=new SolucionTarea();
-                          this.solucionTarea.articulo=data[0].itemCode;
-                          this.solucionTarea.bodega=data[0].codigoDeBodega;
-                          this.solucionTarea.numeroDeSerie=data[0].numeroDeSerie;
+                          this.solucionTarea.articulo=data[x].itemCode;
+                          this.solucionTarea.bodega=data[x].codigoDeBodega;
+                          this.solucionTarea.numeroDeSerie=data[x].numeroDeSerie;
                           this.solucionTarea.linea=this.tarea.detalleTarea[item].linea;
                           let serieExistente:boolean=false;
                           for(let i in this.tarea.solucionTarea){
-                            if(this.tarea.solucionTarea[i].numeroDeSerie==data[0].numeroDeSerie){
+                            if(this.tarea.solucionTarea[i].numeroDeSerie==data[x].numeroDeSerie){
                               serieExistente=true;
                             }
                           }
@@ -100,6 +100,12 @@ export class TareaPage{
                             this.mensajeDeError="El número de seríe ya fue ingresado.";
                             setTimeout(()=>this.mostrarError=false,5000);
                           }
+                      }else{
+                        this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
+                        this.vibration.vibrate([2000,1000,2000]);
+                        this.mostrarError=true;
+                        this.mensajeDeError="El número de seríe no coincide con la bodega necesaria.";
+                        setTimeout(()=>this.mostrarError=false,5000);
                       }
                   }
                 }
@@ -114,37 +120,52 @@ export class TareaPage{
           });
       }else{
         //Modo Offline Activo:Wifi Desconectado
-        let serie:Serie=this._offlineServie.busquedaSerie(this.codigo);
-        if(serie!==undefined){
-          for(let item in this.tarea.detalleTarea){
-              if(this.tarea.detalleTarea[item].articulo==serie.itemCode){
-                  this.solucionTarea=new SolucionTarea();
-                  this.solucionTarea.articulo=serie.itemCode;
-                  this.solucionTarea.bodega=serie.codigoDeBodega;
-                  this.solucionTarea.numeroDeSerie=serie.numeroDeSerie;
-                  this.solucionTarea.linea=this.tarea.detalleTarea[item].linea;
-                  let serieExistente:boolean=false;
-                  for(let i in this.tarea.solucionTarea){
-                    if(this.tarea.solucionTarea[i].numeroDeSerie==serie.numeroDeSerie){
-                      serieExistente=true;
-                    }
-                  }
-                  if(!serieExistente){
-                      this.tarea.solucionTarea.push(this.solucionTarea);
-                      if(this.tarea.detalleTarea[item].solucion!==this.tarea.detalleTarea[item].asignado){
-                          this.tarea.detalleTarea[item].solucion=Number(this.tarea.detalleTarea[item].solucion)+1;
-                          this.tarea.detalleTarea[item].pendiente=Number(this.tarea.detalleTarea[item].pendiente)-1;
-                          this.tarea.detalleTarea[item].entregado=Number(this.tarea.detalleTarea[item].entregado)+1;
-                          this.tarea.documento.entregado+1;
+        let serie:Array<Serie>=this._offlineServie.busquedaSerie(this.codigo);
+        if(serie.length>0){
+          for(let x in serie){
+            for(let item in this.tarea.detalleTarea){
+                if(this.tarea.detalleTarea[item].articulo==serie[x].itemCode && this.tarea.documento.bodega==serie[x].codigoDeBodega){
+                    this.solucionTarea=new SolucionTarea();
+                    this.solucionTarea.articulo=serie[x].itemCode;
+                    this.solucionTarea.bodega=serie[x].codigoDeBodega;
+                    this.solucionTarea.numeroDeSerie=serie[x].numeroDeSerie;
+                    this.solucionTarea.linea=this.tarea.detalleTarea[item].linea;
+                    let serieExistente:boolean=false;
+                    for(let i in this.tarea.solucionTarea){
+                      if(this.tarea.solucionTarea[i].numeroDeSerie==serie[x].numeroDeSerie){
+                        serieExistente=true;
                       }
-                  }else{
-                    this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
-                    this.vibration.vibrate([2000,1000,2000]);
-                    this.mostrarError=true;
-                    this.mensajeDeError="El número de seríe ya fue ingresado.";
-                    setTimeout(()=>this.mostrarError=false,5000);
-                  }
-              }
+                    }
+                    if(!serieExistente){
+                        this.tarea.solucionTarea.push(this.solucionTarea);
+                        if(Number(this.tarea.detalleTarea[item].solucion)<Number(this.tarea.detalleTarea[item].asignado)){
+                          this.nativeAudio.play('beep',()=>console.log('Beep Sound playing'));
+                            this.tarea.detalleTarea[item].solucion=Number(this.tarea.detalleTarea[item].solucion)+1;
+                            this.tarea.detalleTarea[item].pendiente=Number(this.tarea.detalleTarea[item].pendiente)-1;
+                            this.tarea.detalleTarea[item].entregado=Number(this.tarea.detalleTarea[item].entregado)+1;
+                            this.tarea.documento.entregado+1;
+                        }else{
+                          this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
+                          this.vibration.vibrate([2000,1000,2000]);
+                          this.mostrarError=true;
+                          this.mensajeDeError="Ya alcanzado el máximo de articulos solicitados del tipo escaneado.";
+                          setTimeout(()=>this.mostrarError=false,5000);
+                        }
+                    }else{
+                      this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
+                      this.vibration.vibrate([2000,1000,2000]);
+                      this.mostrarError=true;
+                      this.mensajeDeError="El número de seríe ya fue ingresado.";
+                      setTimeout(()=>this.mostrarError=false,5000);
+                    }
+                }else{
+                  this.nativeAudio.play('errorsound',()=>console.log('Error Sound playing'));
+                  this.vibration.vibrate([2000,1000,2000]);
+                  this.mostrarError=true;
+                  this.mensajeDeError="El número de seríe no coincide con la bodega necesaria.";
+                  setTimeout(()=>this.mostrarError=false,5000);
+                }
+            }
           }
         }else{
           //En caso de código no encontrado

@@ -17,9 +17,16 @@ export class OfflineService {
   public getEstado():boolean{
     return this.estado;
   }
-  public busquedaSerie(serie:string){
+  public busquedaSerie(serie:string):Array<Serie>{
     let series:Array<Serie>=JSON.parse(window.localStorage.getItem('series'));
-    return series.find((item)=>this.validarSerie(item,serie));
+    let tmp:Array<Serie>=new Array<Serie>();
+    for(let i in series){
+      if(series[i].numeroDeSerie===serie){
+        tmp.push(serie);
+      }
+    }
+    //return series.find((item)=>this.validarSerie(item,serie));
+    return tmp;
   }
   public validarSerie(item:Serie,serie:string){
     return item.numeroDeSerie===serie;
